@@ -1,5 +1,5 @@
 /*
-Связный список - это структура данных.
+Связный список - это структура данных. 
 Элементы списка связаны между собой. Когда связь одна — список односвязный.
 В файле представлен пример односвязного списка.
 */
@@ -38,8 +38,7 @@ node_t* prepend_list(list_t* const lst, int x); // Добавить элемен
 int pop_list(list_t * const lst);               // Извлечь первый элемент списка
 void print_list(const list_t * const lst);      // Вывести список
 void free_list(list_t * const lst);             // Удалить список
-void push(node_t* head, int data);
-void push_test();
+void copy_list(int k);                          // Копирует список (все для работы копирования)
 
 int main(void)
 {
@@ -72,8 +71,8 @@ int main(void)
      Снова выводим список.
      После 3-х извлечений должно быть 2 3 4 5 6 7 8 9
      */
-    push_test(plist);
     print_list(plist);
+    copy_list(3);               //Чтоб работало копирование
     // Удаляем список
     free_list(plist);
     return 0;
@@ -100,6 +99,7 @@ list_t* create_list(void)
  Создать элемент списка
  Функция вспомогательная, так как самостоятельно ей пользоваться неудобно. Потому что надо вручную
  передавать указатель на следующий элемент. А затем полученный новый указатель вставлять в список.
+ 
  @param  int x — значение элемента
  @param  node_t* next — указатель на следующий элемент
  @return node_t* — указатель на созданный элемент
@@ -111,17 +111,18 @@ node_t* create_node(int x, node_t* next)
     if (p_new_node == NULL) {
         return NULL;
     }
-
+    
     // Заполняем поля структуры в новом элементе
     p_new_node->data=x;
     p_new_node->next=next;
-
+    
     // Возвращаем указатель на новый элемент
     return p_new_node;
 }
 
 /*
  Добавить элемент в конец списка
+ 
  @param  list_t* const lst — указатель на связный список (контейнер)
  @param  int x — значение элемента
  @return node_t* — указатель на добавленный элемент
@@ -130,7 +131,7 @@ node_t* append_list(list_t* const lst, int x)
 {
     // Создаем новый элемент. Поле next указывает в NULL, так как элемент поседний
     node_t* p_new_node = create_node(x, NULL);
-
+    
     /*
      Чтобы записать в конец списка, мы должны дойти до его конца.
      Идем по списку
@@ -152,13 +153,14 @@ node_t* append_list(list_t* const lst, int x)
     }
     // Инкрементируем счетчик (длина списка)
     ++lst->size;
-
+    
     // Возвращаем указатель на новый элемент
     return p_new_node;
 }
 
 /*
  Добавить элемент в начало списка
+ 
  @param  list_t* const lst — указатель на связный список (контейнер)
  @param  int x — значение элемента
  @return node_t* — указатель на добавленный элемент
@@ -174,7 +176,7 @@ node_t* prepend_list(list_t* const lst, int x)
         // Инкрементируем счетчик (длина списка)
         ++lst->size;
     }
-
+    
     // Возвращаем указатель на новый элемент
     return p_new_node;
 }
@@ -182,6 +184,7 @@ node_t* prepend_list(list_t* const lst, int x)
 /*
  Извлечь первый элемент списка
  Извлечение — это возврат первого элемента из списка + удаление его.
+ 
  @param  list_t* const lst — указатель на связный список (контейнер)
  @return int — значение первого элемента списка
  */
@@ -201,7 +204,7 @@ int pop_list(list_t * const lst)
     lst->head = next;
     // Декрементируем счетчик (длина списка)
     --lst->size;
-
+    
     // Возвращаем сохранненое значение элемента
     return data;
 }
@@ -209,6 +212,7 @@ int pop_list(list_t * const lst)
 /*
  Вывести список
  Выводим элементы связного списка один за одним через пробел
+ 
  @param  const list_t * const lst — указатель на связный список (контейнер)
  */
 void print_list(const list_t * const lst)
@@ -231,6 +235,7 @@ void print_list(const list_t * const lst)
 /*
  Удалить список
  Освобождаем память
+ 
  @param  list_t * const — указатель на связный список (контейнер)
  */
 void free_list(list_t * const lst)
@@ -251,15 +256,12 @@ void free_list(list_t * const lst)
     free(lst);
 }
 
-
- void push(node_t* head, int data) {
-node_t* newNode = malloc(sizeof(node_t));
-newNode->data = data;
-newNode->next = head;
-head = newNode;
-}
-
-void push_test() {
-list_t* head = build();
-push(head, 1);
+// Копирование                                                                        
+void copy_list(int k)
+{
+    list_t* plist = create_list();
+    for(int j = 1; j < k; ++j)
+    {
+        print_list(plist);
+    }
 }
